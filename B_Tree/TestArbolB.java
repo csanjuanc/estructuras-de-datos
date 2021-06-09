@@ -1,8 +1,10 @@
+package B_Tree;
+
 /**
  *
  * @author CSJ
  */
-public class ArbolBTest {
+public class TestArbolB {
 
     public static void main(String[] args) {
         //grado minimo del Arbol B es t=3
