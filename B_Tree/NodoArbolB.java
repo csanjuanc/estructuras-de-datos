@@ -2,7 +2,7 @@ package B_Tree;
 
 /**
  *
- * @author CSJ
+ * @author Carlos San Juan <carlossanjuanc@gmail.com>
  */
 public class NodoArbolB {
 

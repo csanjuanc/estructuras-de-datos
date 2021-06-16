@@ -1,5 +1,9 @@
 package ArbolGeneral;
 
+/**
+ *
+ * @author Carlos San Juan <carlossanjuanc@gmail.com>
+ */
 
 class testArbolNario {
     

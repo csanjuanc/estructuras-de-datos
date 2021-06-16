@@ -1,5 +1,9 @@
 package ArbolGeneral;
 
+/**
+ *
+ * @author Carlos San Juan <carlossanjuanc@gmail.com>
+ */
 import java.util.StringTokenizer;
 
 public class ArbolNario {

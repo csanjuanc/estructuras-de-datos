@@ -2,7 +2,7 @@ package MinHeap;
 
 /**
  *
- * @author csanjuan
+ * @author Carlos San Juan <carlossanjuanc@gmail.com>
  */
 public class MinHeap {
     private int[] heap;

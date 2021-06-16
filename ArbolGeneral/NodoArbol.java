@@ -2,7 +2,7 @@ package ArbolGeneral;
 
 /**
  *
- * @author Carlos SJ
+ * @author Carlos San Juan <carlossanjuanc@gmail.com>
  */
 public class NodoArbol {
     //De tipo Object para poder almacenar cualquier informacion
