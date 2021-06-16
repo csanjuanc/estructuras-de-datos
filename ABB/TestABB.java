@@ -11,7 +11,7 @@ public class TestABB {
         ABB arbolBinario = new ABB();
         
         //Se insertan valores aleatorios al arbol
-        arbolBinario.insertar(30);
+        arbolBinario.insertarIterativo(30);
         arbolBinario.insertar(20);
         arbolBinario.insertar(40);
         arbolBinario.insertar(10);
@@ -33,6 +33,8 @@ public class TestABB {
         arbolBinario.imprimirInOrder();
         System.out.println("\nArbol PreOrden:");
         arbolBinario.imprimirPreOrder();
+        System.out.println("\nArbol PreOrden (iterativo):");
+        arbolBinario.preOrderIterativo();
         System.out.println("\nArbol PostOrden:");
         arbolBinario.imprimirPostOrder();
         
@@ -46,5 +48,12 @@ public class TestABB {
         System.out.println("\n");
         //Note que al realizarce la eliminacion de 20, es reemplazado por su sucesor
         arbolBinario.imprimirArbol();
+        
+        int objetivo = 7;
+        System.out.println("El valor mas cercano a " + objetivo + " es: " + arbolBinario.buscarCercano(objetivo));
+        arbolBinario.sucesor(10);
+        
+        //Muestra el ancestro comun mas bajo en O(h), con h la altura del arbol
+        arbolBinario.ancestro(26, 44);
     }
 }

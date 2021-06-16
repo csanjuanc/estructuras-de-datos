@@ -1,11 +1,48 @@
 package ABB;
 
+import java.util.Stack;
+
 /**
  *
  * @author Carlos San Juan <carlossanjuanc@gmail.com>
  */
 public class ABB {
     private NodoABB root;
+    
+    public boolean isEmpty() {
+        return (root == null);
+    }
+    
+    public void insertarIterativo(int key) {
+        NodoABB nodo = new NodoABB(key);
+
+        if (isEmpty()) {
+            root = nodo;
+        } else {
+            NodoABB nodoActual = root;
+            NodoABB nodoPadre;
+
+            while(true) {
+                nodoPadre = nodoActual;
+
+                if (key < nodoActual.key) {
+                    nodoActual = nodoActual.leftChild;
+
+                    if (nodoActual == null) {
+                        nodoPadre.leftChild = nodo;
+                        return;
+                    }
+                } else {
+                    nodoActual = nodoActual.rightChild;
+
+                    if (nodoActual == null) {
+                        nodoPadre.rightChild = nodo;
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     /***************************************************************************/
     /******************************* INSERTAR **********************************/
@@ -14,6 +51,7 @@ public class ABB {
     }
 
     // Metodo privado que inserta de forma recursiva los nodos en el arbol
+    // Notar que no se pueden ingresar claves duplicadas
     private NodoABB insertarR(int key, NodoABB nodo) {
         if (nodo == null) {
             return new NodoABB(key);
@@ -110,6 +148,29 @@ public class ABB {
             preOrder(focusNode.rightChild);
         }
     }
+    
+    public void preOrderIterativo() {
+        // Base Case
+        if (root == null) {
+            return;
+        }
+
+        //Se crea una pila (Clase Stack) como estructura auxiliar
+        Stack<NodoABB> pila = new Stack<NodoABB>();
+        pila.push(root);
+
+        while (!pila.empty()) {
+            NodoABB nodoActual = pila.pop();
+            System.out.print(nodoActual.key + ", ");
+
+            if (nodoActual.rightChild != null) {
+                pila.push(nodoActual.rightChild);
+            }
+            if (nodoActual.leftChild != null) {
+                pila.push(nodoActual.leftChild);
+            }
+        }
+    }
 
     /***************************************************************************/
     /******************************* POST ORDER ********************************/
@@ -173,6 +234,124 @@ public class ABB {
         }
 
         return nodoActual.key;
+    }
+    
+    /***************************************************************************/
+    /****************************** PREDECESOR *********************************/
+    public void predecesor(int numero) {
+        NodoABB nodoActual = buscarElemento(numero);
+
+        if (nodoActual.leftChild != null) {
+            System.out.println("El predecesor de " + numero + " es: " + buscarMax(nodoActual.leftChild));
+        }
+        // INCOMPLETO !!!
+        //Falta hacer el caso el nodo no tiene hijos, por lo tanto el antecesor es el padre del nodo
+    }
+    
+    /***************************************************************************/
+    /********************************* SUCESOR *********************************/
+
+    public void sucesor(int numero) {
+        NodoABB nodoActual = buscarElemento(numero);
+
+        if (nodoActual.rightChild != null) {
+            //Se busca el menor del hijo derecho
+            System.out.println("El sucesor de " + numero + " es: " + buscarMin(nodoActual.rightChild));
+        } else {
+            //se busca el padre o la raiz dependiendo el nodo hoja (izq o der)
+            System.out.println("El sucesor de " + numero + " es: " + buscaSucesorPadre(numero));
+        }
+    }
+
+    public int buscaSucesorPadre(int key) {
+        NodoABB actual = root;
+        NodoABB elPadre = null;
+
+        if (actual.key == key) {
+            //No tiene padre
+            elPadre = null;
+        } else {
+            //Se busca en el arbol el padre
+            while (actual.key != key) {
+                if (key < actual.key) {
+                    elPadre = actual;
+                    actual = actual.leftChild;
+                } else {
+                    elPadre = actual;
+                    actual = actual.rightChild;
+                }
+
+                if (actual == null) {
+                    elPadre = null;
+                }
+            }
+        }
+
+        //Revisa si es el hijo izquierdo
+        if (elPadre.leftChild.key == key) {
+            //Es el hijo izquierdo, el padre es el sucesor
+            return elPadre.key;
+        } else {
+            return root.key;
+        }
+    }
+    
+    /***************************************************************************/
+    /*********************** ANCESTRO COMUN MAS BAJO ***************************/
+    public void ancestro(int n1, int n2){
+        NodoABB ancestro = ancestroCMB(root, n1, n2);
+        
+        if(ancestro == null) {
+            System.out.println("No existe el ancestro comun mas bajo");
+        }else {
+            System.out.println("El ancestro comun mas bajo es: " + ancestro.key);
+        }
+    }
+    
+    private NodoABB ancestroCMB(NodoABB node, int n1, int n2) { 
+        if (node == null) 
+            return null; 
+   
+        // If both n1 and n2 are smaller than root, then LCA lies in left 
+        if (node.key > n1 && node.key > n2) 
+            return ancestroCMB(node.leftChild, n1, n2); 
+   
+        // If both n1 and n2 are greater than root, then LCA lies in right 
+        if (node.key < n1 && node.key < n2)  
+            return ancestroCMB(node.rightChild, n1, n2); 
+   
+        return node; 
+    }
+    
+    /***************************************************************************/
+    /**************************** BUSCAR MAS CERCANO ***************************/
+    public int buscarCercano(int target) {
+        // Initialize minimum difference
+        int min_diff = Integer.MAX_VALUE;
+        int min_diff_key = -1;
+
+        return buscarMasCercano(root, target, min_diff, min_diff_key);
+    }
+    
+    private int buscarMasCercano(NodoABB nodo, int objetivo, int diferenciaActual, int menorValor) {
+        if (nodo == null) {
+            return menorValor;
+        }
+
+        if (nodo.key == objetivo) {
+            return objetivo;
+        }
+
+        if (Math.abs(nodo.key - objetivo) < diferenciaActual) {
+            diferenciaActual = Math.abs(nodo.key - objetivo);
+            menorValor = nodo.key;
+        }
+
+        if (objetivo < nodo.key) {
+            return buscarMasCercano(nodo.leftChild, objetivo, diferenciaActual, menorValor);
+        }else {
+            return buscarMasCercano(nodo.rightChild, objetivo, diferenciaActual, menorValor);
+        }
     }
     
     /***************************************************************************/
