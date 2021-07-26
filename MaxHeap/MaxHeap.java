@@ -21,6 +21,10 @@ public class MaxHeap {
         //Se construye el heap
         BuildHeap();
     }
+    
+    public int[] getHeap(){
+        return heap;
+    }
 
     public void insert(int dato) {
         if(size == heap.length) {
